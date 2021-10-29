@@ -1,0 +1,25 @@
+<script>
+    // id = id after 'rec' in block settings
+    var prms = [
+            {
+                id: "1234567",
+                url : "https://docs.google.com/spreadsheets/d/uniq_google_sheet_id/edit?usp=sharing",
+                req : "select C, D, E, G, H, F, I, J where B='search_value'",
+                start_i: 0,  // 1 if instead of labels we use first row like a header
+                range: 'B1:J',
+                sheet: 'cashback2'
+            },
+            {
+                id: "8901234",
+                url : "https://docs.google.com/spreadsheets/d/uniq_google_sheet_id/edit?usp=sharing",
+                req : "select sum(C), sum(D), sum(E), sum(G), sum(H), sum(F), sum(I), sum(J) where B='" + 
+                      email + "' or B='Пригласил' group by B",
+                start_i: 0,  // 1 if instead of labels we use first row like a header
+                range: 'B1:J',
+                sheet: 'cashback2',
+                // labels - optional if headers are ugly
+                labels: ["title1", "title1", "title1", "title1", "title1", "title1", "title1"]
+            },
+    ];
+</script>
+<script src="https://lilyok.github.io/gsheet4tilda/src/js/load_table.js"></script>
