@@ -1,3 +1,12 @@
+String.prototype.format = function() {
+    var formatted = this;
+    for (var i = 0; i < arguments.length; i++) {
+        var regexp = new RegExp('\\{'+i+'\\}', 'gi');
+        formatted = formatted.replace(regexp, arguments[i]);
+    }
+    return formatted;
+};
+
 const createDataTree = (dataset, elId=null) => {
   const hashTable = Object.create(null);
   dataset.forEach(aData => {
@@ -41,6 +50,9 @@ function createEl(x) {
   li.append(document.createElement("br"));
   li.appendChild(curSum);
   li.append(document.createElement("br"));
+
+  
+    li.setAttribute("class", "person");
 
   return li;
 }
@@ -109,16 +121,13 @@ function listItem(obj, block) {
 }
 
 
-function createTree(dataset, elId, blockId) {
+function createTree(dataset, elId, blockId, summaryTemplate) {
   tree = createDataTree(dataset, elId);
   var block = document.getElementById(blockId)
-  summary = listItem(tree[0], block);
-  window.PrevSum = summary[0]
-  window.CurSum = summary[1]
-  window.PrevTrade = summary[2]
-  window.CurTrade = summary[3]
+  summary = listItem(tree[0], block);  // PrevSum, CurSum, PrevTrade, CurTrade
 
-  console.log(summary)
+  // console.log(summaryTemplate.format(summary[0], summary[1], summary[2],summary[3]));
+  // console.log(summary)
   var toggler = document.getElementsByClassName("caret");
   var i;
 

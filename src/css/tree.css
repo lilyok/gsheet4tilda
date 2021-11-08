@@ -5,6 +5,12 @@
   padding: 5px;
 }
 
+.person {
+  border: 1px solid #000;
+  padding: 10px;
+  margin: 10px;
+}
+
 /* Create the caret/arrow with a unicode, and style it */
 .caret::before {
   content: "\25B6";
@@ -28,11 +34,11 @@
   display: block;
 }
 
-li {
+/*li {
   border: 1px solid #000;
   padding: 10px;
   margin: 10px;
-}
+}*/
 
 ul {
     list-style-type: none;

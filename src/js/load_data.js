@@ -26,7 +26,7 @@ google.visualization.Query.setResponse = function(data)
 {	
 	var dataset = tableData2jsonList(data)
 	if ("nodeID" in params && "isTree" in params && (params.isTree == true ||  params.isTree == "true")) {
-		createTree(dataset, params.nodeID, params.blockID)
+		createTree(dataset, params.nodeID, params.blockID, params.summaryTemplate)
 	} else {
 		console.log(dataset);
 	}
