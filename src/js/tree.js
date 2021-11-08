@@ -29,7 +29,7 @@ function createEl(x) {
   var curTrade = document.createElement("span");
   if (x.childNodes && x.childNodes.length > 0)
     text.setAttribute("class", "caret");
-  text.innerHTML = x.ID;
+  text.innerHTML = x.ID + " (" + x.AdditionalText + ")";
   prevSum.innerHTML = "Потрачено за предыдущий месяц = " + x.PrevSum + "р. ";
   curSum.innerHTML = "Потрачено за текущий месяц = " + x.CurSum+ "р.";
 
