@@ -1,6 +1,6 @@
 $().ready(function(){
 	// var email = 'lil.lilyok@gmail.com';
-	var email = 'lilyoknabieva@gmail.ru';
+	var email = 'lilyoknabieva@gmail.com';
 
 	getData(
         {

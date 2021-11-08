@@ -134,8 +134,6 @@ function createTree(dataset, elId, blockId, summaryId, summaryTemplate, criterio
   summary = listItem(tree[0], block);  // PrevSum, CurSum, PrevTrade, CurTrade
 
   if (summaryTemplate) {
-    console.log(summaryTemplate.format(summary[0], summary[1], summary[2],summary[3]));
-
     var str = "% от ТО выплачивается, если ТО >= {0}руб., а личные покупки >= {1}руб. ".format(criterions[0][1], minPurchase);
     if (summary[0] >= minPurchase && summary[2] >= criterions[0][1]) {
       str += "В прошлом месяце все условия соблюдены. Ваш доход за прошлом месяц составляет: " + calculateIncome(summary[2], criterions) + "руб. ";
@@ -151,9 +149,8 @@ function createTree(dataset, elId, blockId, summaryId, summaryTemplate, criterio
   }
 
   var summary = document.getElementById(summaryId);
+  summary.setAttribute("class", "summary");
   summary.append(str);
-
-  // console.log(str)
 
   var toggler = document.getElementsByClassName("caret");
   var i;

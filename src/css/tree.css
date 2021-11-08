@@ -34,11 +34,12 @@
   display: block;
 }
 
-/*li {
-  border: 1px solid #000;
-  padding: 10px;
-  margin: 10px;
-}*/
+.summary {
+  text-align: center;
+  margin : auto;
+  font-size: large;
+}
+
 
 ul {
     list-style-type: none;
