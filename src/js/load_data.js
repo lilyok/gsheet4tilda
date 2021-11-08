@@ -1,4 +1,4 @@
-var prms;
+var params;
 
 //callback for google spreadsheets response
 var google = {visualization: {Query: {setResponse: function(){}}}}
@@ -25,26 +25,26 @@ function tableData2jsonList(data) {
 google.visualization.Query.setResponse = function(data)
 {	
 	var dataset = tableData2jsonList(data)
-	if ("nodeID" in prms && "isTree" in prms && (prms.isTree == true ||  prms.isTree == "true")) {
-		createTree(dataset, prms.nodeID, prms.blockID)
+	if ("nodeID" in params && "isTree" in params && (params.isTree == true ||  params.isTree == "true")) {
+		createTree(dataset, params.nodeID, params.blockID)
 	} else {
 		console.log(dataset);
 	}
 }
 
 //  request to google spreadsheets
-function getGSheetData(prms)
+function getGSheetData(params)
 {
-	if ("url" in prms && "req" in prms)
+	if ("url" in params && "req" in params)
 	{
 		// table code from url
-		var googleSheetCode = prms["url"].slice( prms["url"].indexOf(
-			"spreadsheets/d/") + 15, prms["url"].indexOf("/edit?"));
+		var googleSheetCode = params["url"].slice( params["url"].indexOf(
+			"spreadsheets/d/") + 15, params["url"].indexOf("/edit?"));
 		$.ajax({	
 			url: 'https://docs.google.com/spreadsheets/u/2/d/' + googleSheetCode +
-				'/gviz/tq?tqx=out:json&range=' + prms.range +
-				'&sheet=' + prms.sheet + '&tq=' +
-				encodeURIComponent( prms.req ),
+				'/gviz/tq?tqx=out:json&range=' + params.range +
+				'&sheet=' + params.sheet + '&tq=' +
+				encodeURIComponent( params.req ),
 			dataType : 'jsonp'
 		});
 	}
@@ -52,8 +52,8 @@ function getGSheetData(prms)
 
 function getData(settings)
 {
-	window.prms = settings;
-	getGSheetData(prms);
+	window.params = settings;
+	getGSheetData(params);
 }
 
 
