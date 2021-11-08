@@ -63,6 +63,7 @@ function listItem(obj, block) {
   var stackUl = [ul];
   var stackLI = [li];
    
+  var summary = []
 
   while (true) {
     if (x.childNodes && x.childNodes.length > 0) {
@@ -87,6 +88,7 @@ function listItem(obj, block) {
       stackLI[stackLI.length - 1].append("ТО за предыдущий месяц = " + x.PrevTrade);
       stackLI[stackLI.length - 1].append(document.createElement("br"));
       stackLI[stackLI.length - 1].append("ТО за текущий месяц = " + x.CurTrade);
+      summary = [x.PrevSum, x.CurSum, x.PrevTrade, x.CurTrade];
 
       var childPrevTrade = x.PrevSum + x.PrevTrade;
       var childCurTrade = x.CurSum + x.CurTrade;
@@ -103,13 +105,20 @@ function listItem(obj, block) {
     }
 
   }
+  return summary;
 }
 
 
 function createTree(dataset, elId, blockId) {
   tree = createDataTree(dataset, elId);
   var block = document.getElementById(blockId)
-  listItem(tree[0], block);
+  summary = listItem(tree[0], block);
+  window.PrevSum = summary[0]
+  window.CurSum = summary[1]
+  window.PrevTrade = summary[2]
+  window.CurTrade = summary[3]
+
+  console.log(summary)
   var toggler = document.getElementsByClassName("caret");
   var i;
 
