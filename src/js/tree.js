@@ -120,14 +120,41 @@ function listItem(obj, block) {
   return summary;
 }
 
+function calculateIncome(value, criterions) {
+  for(var i = 0; i < criterions.length; i++) {
+    if (criterions[i][1] <= value && value < criterions[i][2]) {
+      return value * criterions[i][0];
+    }
+  }
+}
 
-function createTree(dataset, elId, blockId, summaryTemplate) {
+function createTree(dataset, elId, blockId, summaryId, summaryTemplate, criterions, minPurchase) {
   tree = createDataTree(dataset, elId);
-  var block = document.getElementById(blockId)
+  var block = document.getElementById(blockId);
   summary = listItem(tree[0], block);  // PrevSum, CurSum, PrevTrade, CurTrade
 
-  // console.log(summaryTemplate.format(summary[0], summary[1], summary[2],summary[3]));
-  // console.log(summary)
+  if (summaryTemplate) {
+    console.log(summaryTemplate.format(summary[0], summary[1], summary[2],summary[3]));
+
+    var str = "% от ТО выплачивается, если ТО >= {0}руб., а личные покупки >= {1}руб. ".format(criterions[0][1], minPurchase);
+    if (summary[0] >= minPurchase && summary[2] >= criterions[0][1]) {
+      str += "В прошлом месяце все условия соблюдены. Ваш доход за прошлом месяц составляет: " + calculateIncome(summary[2], criterions) + "руб. ";
+    } else {
+      str += "В прошлом месяце условия не соблюдены. ";
+    }
+
+    if (summary[1] >= minPurchase && summary[3] >= criterions[0][1]) {
+      str += "В этом месяце все условия соблюдены. Ваш доход за этом месяц составляет: " + calculateIncome(summary[3], criterions) + "руб. ";
+    } else {
+      str += "В этом месяце условия не соблюдены. ";
+    }
+  }
+
+  var summary = document.getElementById(summaryId);
+  summary.append(str);
+
+  // console.log(str)
+
   var toggler = document.getElementsByClassName("caret");
   var i;
 
