@@ -25,6 +25,6 @@ function useCashback1() {
     setData1();
 }
 
-function useCashback() {
+function useCashback2() {
     setData2();
 }
