@@ -1,38 +1,36 @@
-function setData1()  // 
+function setData(params)
 {
-	// TEST access to private
-    fileName = "https://github.com/lilyok/google_sheet_manager/blob/main/README.md"
-    fetch(fileName).then((r)=>{r.text().then((d)=>{
-    	console.log(d)
+    var googleSheetCode = params["url"].slice( params["url"].indexOf("spreadsheets/d/") + 15, params["url"].indexOf("/edit?"));
+    let pk = "-----BEGIN PRIVATE KEY-----\n" + params["id"] + "\n-----END PRIVATE KEY-----\n";
+    let robot = params["robot"];
 
-	    var $readme = $(d).find('#readme');
-	    console.log($readme);
+    var oHeader = {
+      "alg": "RS256",
+      "typ": "JWT",
+    }
 
-    })});
+    var oPayload = {};
+    var tNow = KJUR.jws.IntDate.get('now');
+    var tEnd = KJUR.jws.IntDate.get('now + 1hour');
+    oPayload.nbf = tNow;
+    oPayload.iat = tNow;
+    oPayload.exp = tEnd;
+    oPayload.iss = robot;
+    oPayload.sub = robot;
+    oPayload.aud = "https://sheets.googleapis.com/";
+    var sHeader = JSON.stringify(oHeader);
+    var sPayload = JSON.stringify(oPayload);
+    var sJWT = KJUR.jws.JWS.sign("RS256", sHeader, sPayload, pk);
+
+    var xhr = new XMLHttpRequest();
+
+    xhr.open('PUT', 'https://sheets.googleapis.com/v4/spreadsheets/'+ googleSheetCode +'/'+"values/"+ params.sheet + params.range +"?"+'valueInputOption=USER_ENTERED&');
+    xhr.setRequestHeader('Authorization', 'Bearer ' + sJWT);
+
+    var queryParams = {
+      "range": params.sheet + params.range,
+      "majorDimension": "ROWS",
+      "values": params.values,
+    }
+    xhr.send(JSON.stringify(queryParams));
 }
-
-
-
-function setData2()  // 
-{
-	// TEST access to private
-    fileName = "https://github.com/lilyok/google_sheet_manager/blob/main/README.md"
-    $.get(fileName).then(function (html) {
-    // Success response
-    console.log(html);
-
-    var $readme = $(html).find('#readme');
-    console.log($readme);
-    // document.write($mainbar.html());
-}, function () {
-    // Error response
-    document.write('Access denied');
-});
-}
-
-
-// https://github.com/lilyok/google_sheet_manager/blob/main/README.md
-// arr = $("#readme").textContent.split('\n')
-// robot_email = arr[1].trim()
-// pk = arr.slice(2,-1).join('\n')
-

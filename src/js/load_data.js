@@ -6,7 +6,11 @@ var google = {visualization: {Query: {setResponse: function(){}}}}
 
 function tableData2jsonList(data) {
     result = [];
-    labels = ["ID", "ParentID", "PrevSum", "CurSum", "AdditionalText"];
+    if (params.labels) {
+        labels = params.labels;
+    } else {
+        labels = ["ID", "ParentID", "PrevSum", "CurSum", "AdditionalText"];
+    }
 
     for(var i = 0; i < data.table.rows.length; i++)
     {
@@ -29,7 +33,14 @@ google.visualization.Query.setResponse = function(data)
         createTree(dataset, params.nodeID, params.blockID, params.summaryBlockID,
                     params.summaryTemplate, params.criterions, params.minPurchase);
     } else {
-        console.log(dataset);
+        $.each(dataset[0], function(key, value) {
+            var spanEl = document.createElement("span");
+            spanEl.setAttribute("id", key + "_value");
+            spanEl.innerHTML = value;
+            var el = document.getElementById(key);
+            el.appendChild(spanEl);
+            el.append("руб.");
+        })
     }
 }
 
