@@ -35,7 +35,12 @@ function setData(params)
     xhr.send(JSON.stringify(queryParams));
     if (params.htmlField2update) {
         $.each(params.htmlField2update, function(key, value) {
-            $("#" + key).text(value);
+            var curEl = document.getElementById(key);
+            if (curEl.nodeName == 'INPUT') {
+                curEl.value = value
+            } else {
+                curEl.innerHTML = value;
+            }
         })
     }
 }

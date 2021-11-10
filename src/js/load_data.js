@@ -34,8 +34,12 @@ google.visualization.Query.setResponse = function(data)
                     params.summaryTemplate, params.criterions, params.minPurchase);
     } else {
         $.each(dataset[0], function(key, value) {
-            var spanEl = document.getElementById(key + "_value"); //document.createElement("span");
-            spanEl.innerHTML = value;
+            var curEl = document.getElementById(key + "_value");
+            if (curEl.nodeName == 'INPUT') {
+                curEl.value = value
+            } else {
+                curEl.innerHTML = value;
+            }
         })
     }
 }
