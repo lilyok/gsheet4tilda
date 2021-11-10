@@ -33,4 +33,9 @@ function setData(params)
       "values": params.values,
     }
     xhr.send(JSON.stringify(queryParams));
+    if (params.htmlField2update) {
+        $.each(params.htmlField2update, function(key, value) {
+            $("#" + key).text(value);
+        })
+    }
 }

@@ -30,8 +30,7 @@ function useCashback() {
         "sheet": "count_cashback!",
         "range": `K${rowId}:K${rowId}`,
         "values": [[cashBack]],
+        "htmlField2update": {"cashback_value": availableCashback},
     }
     setData(params);
-    $("#cashback_value").text(availableCashback);
-
 }

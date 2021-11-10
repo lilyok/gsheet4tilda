@@ -34,12 +34,8 @@ google.visualization.Query.setResponse = function(data)
                     params.summaryTemplate, params.criterions, params.minPurchase);
     } else {
         $.each(dataset[0], function(key, value) {
-            var spanEl = document.createElement("span");
-            spanEl.setAttribute("id", key + "_value");
+            var spanEl = document.getElementById(key + "_value"); //document.createElement("span");
             spanEl.innerHTML = value;
-            var el = document.getElementById(key);
-            el.appendChild(spanEl);
-            el.append("руб.");
         })
     }
 }
