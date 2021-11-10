@@ -37,7 +37,8 @@ function setData(params)
         $.each(params.htmlField2update, function(key, value) {
             var curEl = document.getElementById(key);
             if (curEl.nodeName == 'INPUT') {
-                curEl.value = value
+                curEl.value = value;
+                $('#' + key + "_value").change();
             } else {
                 curEl.innerHTML = value;
             }

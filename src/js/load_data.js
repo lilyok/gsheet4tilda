@@ -36,7 +36,8 @@ google.visualization.Query.setResponse = function(data)
         $.each(dataset[0], function(key, value) {
             var curEl = document.getElementById(key + "_value");
             if (curEl.nodeName == 'INPUT') {
-                curEl.value = value
+                curEl.value = value;
+                $('#' + key + "_value").change();
             } else {
                 curEl.innerHTML = value;
             }
