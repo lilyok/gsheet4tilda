@@ -39,8 +39,8 @@ function createEl(x) {
   if (x.childNodes && x.childNodes.length > 0)
     text.setAttribute("class", "caret");
   text.innerHTML = x.ID + " (" + x.AdditionalText + ")";
-  prevSum.innerHTML = "Потрачено за предыдущий месяц = " + x.PrevSum + "р. ";
-  curSum.innerHTML = "Потрачено за текущий месяц = " + x.CurSum+ "р.";
+  prevSum.innerHTML = "Сумма личных покупок за предыдущий месяц = " + x.PrevSum + "р. ";
+  curSum.innerHTML = "Сумма личных покупок за текущий месяц = " + x.CurSum+ "р.";
 
   li.appendChild(text);
   li.append(document.createElement("br"));
