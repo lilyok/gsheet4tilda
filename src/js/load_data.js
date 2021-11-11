@@ -29,7 +29,7 @@ function tableData2jsonList(data) {
 google.visualization.Query.setResponse = function(data)
 {   
     var dataset = tableData2jsonList(data)
-    if ("nodeID" in params && "isTree" in params && (params.isTree == true ||  params.isTree == "true")) {
+    if ("isTree" in params && (params.isTree == true ||  params.isTree == "true")) {
         createTree(dataset, params.nodeID, params.blockID, params.summaryBlockID,
                     params.summaryTemplate, params.criterions, params.minPurchase);
     } else {
