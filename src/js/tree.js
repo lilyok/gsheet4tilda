@@ -59,6 +59,7 @@ function createEl(x) {
 
 
 function listItem(obj, block) {
+  children = []
   x = obj;
 
   var ul = document.createElement("ul");
@@ -81,6 +82,7 @@ function listItem(obj, block) {
     if (x.childNodes && x.childNodes.length > 0) {
       stack.push(x);
       x = x.childNodes.pop();
+      children.push(x.ID);
 
       var ul = curUl !== null ? curUl : document.createElement("ul");
       ul.setAttribute("class", "nested");
@@ -132,6 +134,10 @@ function createTree(dataset, elId, blockId, summaryId, summaryTemplate, criterio
   tree = createDataTree(dataset, elId);
   var block = document.getElementById(blockId);
   summary = listItem(tree[0], block);  // PrevSum, CurSum, PrevTrade, CurTrade
+
+  delete window.result;
+  delete window.tree;
+
 
   if (summaryTemplate) {
     var str = "% от ТО выплачивается, если ТО >= {0}руб., а личные покупки >= {1}руб. ".format(criterions[0][1], minPurchase);
