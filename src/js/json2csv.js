@@ -5,9 +5,9 @@ function convertToCSV(objArray) {
     for (var i = 0; i < array.length; i++) {
         var line = '';
         for (var index in array[i]) {
-            if (line != '') line += ','
+            if (line != '') line += ';'
 
-            line += array[i][index];
+            line += isNaN(array[i][index]) ? array[i][index] : array[i][index].toString().replace(".", ",");
         }
 
         str += line + '\r\n';
