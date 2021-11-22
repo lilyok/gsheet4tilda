@@ -10,17 +10,23 @@ String.prototype.format = function() {
 const createDataTree = (dataset, elId=null) => {
   const hashTable = Object.create(null);
   dataset.forEach(aData => {
-    aData.PrevTrade = 0;
-    aData.CurTrade = 0;
+    if (!isPureTree) {
+      aData.PrevTrade = 0;
+      aData.CurTrade = 0;
+    }
     hashTable[aData.ID] = {...aData, childNodes: []};
   });
   const dataTree = [];
   dataset.forEach(aData => {
-    if (aData.ParentID) {
+    if (aData.ParentID && aData.ParentID != aData.ID) {
       hashTable[aData.ParentID].childNodes.push(hashTable[aData.ID]);
     }
     else dataTree.push(hashTable[aData.ID]);
   });
+
+  if (isPureTree) {
+    return hashTable;
+  }
 
   if (elId) {
     return [hashTable[elId]];
@@ -122,23 +128,98 @@ function listItem(obj, block) {
   return summary;
 }
 
-function calculateIncome(value, criterions) {
+function calculateIncome(value, criterions, isPercentData=false) {
+  if (criterions[0][1] > value) {
+    return isPercentData ? [0, 0]: 0;
+  }
   for(var i = 0; i < criterions.length; i++) {
     if (criterions[i][1] <= value && value < criterions[i][2]) {
+      if (isPercentData) {
+        return [criterions[i][0] * 100, value * criterions[i][0]];
+      }
       return value * criterions[i][0];
     }
   }
 }
 
+
+function enrichDataset(dataset, labels, startID, criterions) {
+  const primaryKey = labels[0];
+  const dateKey = labels[1];
+  const key = labels[2];
+  const keyFolowers = labels[3];
+
+  // enrich window.tree by spent money
+  for(var i = 0; i < dataset.length; i++) {
+    const curID = dataset[i][primaryKey];
+    if (!(curID in window.tree)) {
+      continue;
+    };
+    const curDate = dataset[i][dateKey];
+    if (!("byDates" in window.tree[curID])) {
+      window.tree[curID]["byDates"] = {};
+    };
+    if (!(curDate in window.tree[curID]["byDates"])) {
+      window.tree[curID]["byDates"][curDate] = {};
+    };
+    if (!(key in window.tree[curID]["byDates"][curDate])) {
+      window.tree[curID]["byDates"][curDate][key] = dataset[i][key];
+    };
+    if (!(keyFolowers in window.tree[curID]["byDates"][curDate])) {
+      window.tree[curID]["byDates"][curDate][keyFolowers] = 0;
+    };
+  }
+
+  stack = [startID];
+  x = startID;
+
+  enrichedDataset = []
+
+  while (true) {
+    if (window.tree[x].childNodes && window.tree[x].childNodes.length > 0) {
+      stack.push(x);
+      x = window.tree[x].childNodes.pop()["ID"];
+    } else if (stack.length > 0) {
+
+      $.each(window.tree[x]["byDates"],function(k, v){
+        const incomeData = calculateIncome(v[keyFolowers], criterions, true);
+        el = {"email": x, "дата": k, [key]: v[key], [keyFolowers]: v[keyFolowers], "Процент в %": incomeData[0], "Доход": incomeData[1]}
+        enrichedDataset.push(el);
+      });
+
+      var curSumsByDates = window.tree[x]["byDates"];
+
+      x = stack.pop();
+
+      $.each(curSumsByDates,function(curDate, curSums){
+        const prevSum = curSums[keyFolowers] + curSums[key];
+        if (!("byDates" in window.tree[x])) {
+          window.tree[x]["byDates"] = {};
+        }
+        if (!(curDate in window.tree[x]["byDates"])) {
+          window.tree[x]["byDates"][curDate]= {[key]: 0, [keyFolowers]: 0};
+        }
+        // window.tree[x]["byDates"][curDate][key] += curSums[key];
+        window.tree[x]["byDates"][curDate][keyFolowers] += prevSum;
+
+      });
+    } else {
+      break;
+    }
+  }
+  return enrichedDataset;
+}
+
 function createTree(dataset, elId, blockId, summaryId, summaryTemplate, criterions, minPurchase) {
-  tree = createDataTree(dataset, elId);
+  tree = createDataTree(dataset, elId, isPureTree=!blockId);
   if (blockId) {
+    tree = createDataTree(dataset, elId);
     var block = document.getElementById(blockId);
     summary = listItem(tree[0], block);  // PrevSum, CurSum, PrevTrade, CurTrade
+    delete window.tree;
   }
 
   delete window.result;
-  delete window.tree;
 
 
   if (summaryTemplate) {

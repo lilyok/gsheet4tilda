@@ -22,12 +22,12 @@ $().ready(function(){
 
 $('#report').on('click', function() {
     if (window.children.length > 0) {
-        var startDate = '2021-11-01';
-        var stopDate = '2021-11-12';
+        var startDate = '2021-10-01';
+        var stopDate = '2021-11-31';
         params = {
             filterBy: {"email": new Set(window.children)},
             url : "https://docs.google.com/spreadsheets/d/1EL6Kr649Rf1T-qtJYWkihLZ6gPZZMKYlF5y9_W9UKFI/edit?usp=sharing",
-            req: "SELECT D, C, B where '" + startDate + "' <= A and A <= '" + stopDate + "'",
+            req: "SELECT C, B, D where '" + startDate + "' <= A and A <= '" + stopDate + "'",
             range: 'A2:D',
             sheet: 'for_reports',
             isReport: true,
@@ -41,14 +41,12 @@ $('#report').on('click', function() {
 });
 
 $('#personal_report').on('click', function() {
-        var email = 'lilyoknabieva@gmail.com';
-
-        // var email = 'lil.lilyok@gmail.com';
+        var email = 'lil.lilyok@gmail.com';
         var startDate = '2021-11-01';
-        var stopDate = '2021-11-12';
+        var stopDate = '2021-11-23';
         var personalParams = {
             url : "https://docs.google.com/spreadsheets/d/1EL6Kr649Rf1T-qtJYWkihLZ6gPZZMKYlF5y9_W9UKFI/edit?usp=sharing",
-            req: "SELECT B, D where '" + startDate + "' <= A and A <= '" + stopDate + "' and C='" + email + "'",
+            req: "SELECT C, D where '" + startDate + "' <= A and A <= '" + stopDate + "' and B='" + email + "'",
             range: 'A2:D',
             sheet: 'for_reports',
             isReport: true,

@@ -31,12 +31,16 @@ function tableData2jsonList(data) {
     return result;
 }
 
+
 // Callback to p jsonp
 google.visualization.Query.setResponse = function(data)
 {
     var dataset = tableData2jsonList(data)
     if ("isReport" in params && (params.isReport == true ||  params.isReport == "true")) {
         var fileTitle = params.title;
+        if (params.isAdvanced == true ||  params.isAdvanced == "true") {
+            dataset = enrichDataset(dataset, params.labels, params.nodeID, params.criterions);
+        }
         exportCSVFile(params.labels, dataset, fileTitle);
 
     } else {
