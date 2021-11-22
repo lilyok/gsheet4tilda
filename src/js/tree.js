@@ -181,13 +181,13 @@ function enrichDataset(dataset, labels, startID, criterions) {
       x = window.tree[x].childNodes.pop()["ID"];
     } else if (stack.length > 0) {
 
-      $.each(window.tree[x]["byDates"],function(k, v){
+      var curSumsByDates = "byDates" in window.tree[x] ? window.tree[x]["byDates"] : {};
+
+      $.each(curSumsByDates, function(k, v){
         const incomeData = calculateIncome(v[keyFolowers], criterions, true);
         el = {"email": x, "дата": k, [key]: v[key], [keyFolowers]: v[keyFolowers], "Процент в %": incomeData[0], "Доход": incomeData[1]}
         enrichedDataset.push(el);
       });
-
-      var curSumsByDates = window.tree[x]["byDates"];
 
       x = stack.pop();
 
