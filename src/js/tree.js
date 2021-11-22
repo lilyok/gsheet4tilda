@@ -132,8 +132,10 @@ function calculateIncome(value, criterions) {
 
 function createTree(dataset, elId, blockId, summaryId, summaryTemplate, criterions, minPurchase) {
   tree = createDataTree(dataset, elId);
-  var block = document.getElementById(blockId);
-  summary = listItem(tree[0], block);  // PrevSum, CurSum, PrevTrade, CurTrade
+  if (blockId) {
+    var block = document.getElementById(blockId);
+    summary = listItem(tree[0], block);  // PrevSum, CurSum, PrevTrade, CurTrade
+  }
 
   delete window.result;
   delete window.tree;
@@ -152,19 +154,20 @@ function createTree(dataset, elId, blockId, summaryId, summaryTemplate, criterio
     } else {
       str += "В этом месяце условия не соблюдены. ";
     }
+    var summary = document.getElementById(summaryId);
+    summary.setAttribute("class", "summary");
+    summary.append(str);
   }
 
-  var summary = document.getElementById(summaryId);
-  summary.setAttribute("class", "summary");
-  summary.append(str);
+  if (blockId) {
+    var toggler = document.getElementsByClassName("caret");
+    var i;
 
-  var toggler = document.getElementsByClassName("caret");
-  var i;
-
-  for (i = 0; i < toggler.length; i++) {
-   toggler[i].addEventListener("click", function() {
-     this.parentElement.querySelector(".nested").classList.toggle("active");
-     this.classList.toggle("caret-down");
-   });
+    for (i = 0; i < toggler.length; i++) {
+     toggler[i].addEventListener("click", function() {
+       this.parentElement.querySelector(".nested").classList.toggle("active");
+       this.classList.toggle("caret-down");
+     });
+    }
   }
 }
