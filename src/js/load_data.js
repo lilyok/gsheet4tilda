@@ -51,6 +51,9 @@ google.visualization.Query.setResponse = function(data)
             $.each(dataset[0], function(key, value) {
                 var curEl = document.getElementById(key + "_value");
                 if (curEl.nodeName == 'INPUT') {
+                    if (value != '' && !isNaN(value)) {
+                        value = value.toFixed(2);
+                    }
                     curEl.value = value;
                     $('#' + key + "_value").change();
                 } else {
