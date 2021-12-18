@@ -48,6 +48,10 @@ google.visualization.Query.setResponse = function(data)
             createTree(dataset, params.nodeID, params.blockID, params.summaryBlockID,
                         params.summaryTemplate, params.criterions, params.minPurchase);
         } else {
+            if ("saveAs" in params) {
+                window[params.saveAs] = dataset;
+                return;
+            }
             $.each(dataset[0], function(key, value) {
                 var curEl = document.getElementById(key + "_value");
                 if (curEl.nodeName == 'INPUT') {
