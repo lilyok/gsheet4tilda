@@ -1,5 +1,14 @@
 $().ready(function(){
-    var email = 'lilyoknabieva@gmail.com';
+    window.onstorage = function(e) {
+  console.log('The ' + e.key +
+    ' key has been changed from ' + e.oldValue +
+    ' to ' + e.newValue + '.');
+};
+
+    window.addEventListener('storage', () => {
+       alert(window.localStorage) ;
+    });
+    var email = 'yes@sansmots.com';
 
     getData(
         {
@@ -14,18 +23,18 @@ $().ready(function(){
 });
 
 $('#report').on('click', function() {
-    var email = 'lilyoknabieva@gmail.com';
+    var email = 'yes@sansmots.com';
     if ("tree" in window && Object.keys(window.tree).length !== 0) {
-        var startDate = '2021-09-01';
-        var stopDate = '2021-11-22';
+        var startDate = '2021-12-30';
+        var stopDate = '2022-01-30';
         params = {
             url : "https://docs.google.com/spreadsheets/d/1EL6Kr649Rf1T-qtJYWkihLZ6gPZZMKYlF5y9_W9UKFI/edit?usp=sharing",
-            req: "SELECT B, E, sum(D) where '" + startDate + "' <= A and A <= '" + stopDate + "' group by B, E order by B, E ",
-            range: 'A2:E',
+            req: "SELECT B, G, max(E), max(F), sum(D) where '" + startDate + "' <= A and A <= '" + stopDate + "' group by B, G order by B, G",
+            range: 'A2:G',
             sheet: 'for_reports',
             isReport: true,
             isAdvanced: true,
-            labels: ["email", "дата", "сумма в руб.", "сумма в руб. по сети", "Процент в %", "Доход"],
+            labels: ["email", "дата", "имя", "телефон", "сумма в руб.", "сумма в руб. по сети", "Процент в %", "Доход"],
             criterions: [[0.06, 15000, 30000], [0.09, 30000, 60000], [0.12, 60000, 100000],
                 [0.15, 100000, 170000], [0.18, 170000, 250000], [0.22, 250000, 1000000000]],
             title: "Расширенный отчет",
@@ -38,3 +47,4 @@ $('#report').on('click', function() {
 });
 
 // window["tree"]
+

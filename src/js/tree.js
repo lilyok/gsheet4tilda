@@ -146,8 +146,8 @@ function calculateIncome(value, criterions, isPercentData=false) {
 function enrichDataset(dataset, labels, startID, criterions) {
   const primaryKey = labels[0];
   const dateKey = labels[1];
-  const key = labels[2];
-  const keyFolowers = labels[3];
+  const key = labels[4];
+  const keyFolowers = labels[5];
 
   // enrich window.tree by spent money
   for(var i = 0; i < dataset.length; i++) {
@@ -168,6 +168,9 @@ function enrichDataset(dataset, labels, startID, criterions) {
     if (!(keyFolowers in window.tree[curID]["byDates"][curDate])) {
       window.tree[curID]["byDates"][curDate][keyFolowers] = 0;
     };
+    for (var j=2; j < 4; j++) {  // between dateKey and key
+      window.tree[curID][labels[j]] = dataset[i][labels[j]];
+    }
   }
 
   stack = [startID];
@@ -185,7 +188,7 @@ function enrichDataset(dataset, labels, startID, criterions) {
 
       $.each(curSumsByDates, function(k, v){
         const incomeData = calculateIncome(v[keyFolowers], criterions, true);
-        el = {"email": x, "дата": k, [key]: v[key], [keyFolowers]: v[keyFolowers], "Процент в %": incomeData[0], "Доход": incomeData[1]}
+        el = {"email": x, "имя": window.tree[x][labels[2]] || "-", "телефон": window.tree[x][labels[3]] || "-", "дата": k, [key]: v[key], [keyFolowers]: v[keyFolowers], "Процент в %": incomeData[0], "Доход": incomeData[1]}
         enrichedDataset.push(el);
       });
 
