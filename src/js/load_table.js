@@ -83,7 +83,7 @@ function gsheet4tilda_createT431 (blockID, data)
 	part2 = part2.slice(0,-1);
 
 	//  clear block form the old data
-	$('#rec' + blockID + " table").html("");
+	$('#rec' + blockID + " table").html('<thead class="t431__thead"><tr><th></th></tr></thead>');
 	
 	t431_createTable(blockID, part1, part2);
 
