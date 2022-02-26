@@ -53,7 +53,30 @@ google.visualization.Query.setResponse = function(data)
                 return;
             }
             $.each(dataset[0], function(key, value) {
+                if (key == "cashback" && document.getElementsByClassName('t-input-group_rd').length > 0) {
+                    const cashback_option = (value != '' && !isNaN(value)) ? ` (доступно ${value.toFixed(2)} р.)` : " (недоступно)";
+                    // TODO check is holiday
+                    const holiday = '';  // '' or ['8 марта', '15%']
+                    const discount_option = holiday ? `<label id='yesDiscount' class="t-radio__control t-text t-text_xs" style=""><input type="radio" name="discountOption" value="акция" class="t-radio js-tilda-rule" data-tilda-req="1"><div class="t-radio__indicator"></div>-${holiday[1]} в честь праздника ${holiday[0]}</label>` : '';
+                    const summary_oprion = (cashback_option  && discount_option) ? '<label id="yesCashbackDiscount" class="t-radio__control t-text t-text_xs" style=""><input type="radio" name="discountOption" value="кешбэк + акция" class="t-radio js-tilda-rule" data-tilda-req="1"><div class="  t-radio__indicator"></div>кешбэк + праздничная скидка</label>' : '';
+                    t = `<div class="t-input-title t-descr t-descr_md" data-redactor-toolbar="no" field="li_title__1645901383097" style="">Применить скидку</div>
+                        <div class="t-input-block">
+                            <div class="t-radio__wrapper">
+                                <label id='noCashback' class="t-radio__control t-text t-text_xs" style=""><input type="radio" name="discountOption" value="нет" checked="checked" class="t-radio js-tilda-rule" data-tilda-req="1"><div class="t-radio__indicator"></div>нет</label>
+                                <label id='yesCashback' class="t-radio__control t-text t-text_xs" style=""><input type="radio" name="discountOption" value="кешбэк" class="t-radio js-tilda-rule" data-tilda-req="1"><div class="t-radio__indicator"></div>кешбэк${cashback_option}</label>
+                                ${discount_option}
+                                ${summary_oprion}
+                             </div>
+                        <div class="t-input-error"></div>
+                        </div>`;
+
+                    $('.t-input-group_rd').html(t);
+
+                    $('#discountOption').change();
+                } 
+
                 var curEl = document.getElementById(key + "_value");
+
                 if (curEl.nodeName == 'INPUT') {
                     if (key == "cashback" && value != '' && !isNaN(value)) {
                         value = value.toFixed(2);
@@ -63,6 +86,7 @@ google.visualization.Query.setResponse = function(data)
                 } else {
                     curEl.innerHTML = value;
                 }
+                
             })
         }
     }
