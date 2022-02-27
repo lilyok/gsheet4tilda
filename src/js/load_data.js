@@ -31,6 +31,25 @@ function tableData2jsonList(data) {
     return result;
 }
 
+const holidays = {  // {month: {day: [text, value]}}
+    1: {7: ["Рождество Христово", 15]},
+    2: {14: ["День святого Валентина", 15], 23: ['День защитника Отечества', 15], 27: ["Тест", 15]},
+    3: {8: ["Международный женский день", 15]},
+    5: {1: ["Праздник Весны и Труда", 15], 9: ["День Победы", 15]},
+    6: {12: ["День России", 15]},
+    11: {4: ["День народного единства", 15]},
+    12: {31: ["Новый Год", 15]}
+};
+
+function isHoliday() {
+    const dt = new Date();
+    const day = dt.getDate();
+    const month = dt.getMonth() + 1;
+    if (month in holidays && day in holidays[month]) {
+        return holidays[month][day];
+    }
+    return '';
+}
 
 // Callback to p jsonp
 google.visualization.Query.setResponse = function(data)
@@ -56,8 +75,8 @@ google.visualization.Query.setResponse = function(data)
                 if (key == "cashback" && document.getElementsByClassName('t-input-group_rd').length > 0) {
                     const cashback_option = (value != '' && !isNaN(value)) ? ` (доступно ${value.toFixed(2)} р.)` : " (недоступно)";
                     // TODO check is holiday
-                    const holiday = '';  // '' or ['8 марта', '15%']
-                    const discount_option = holiday ? `<label id='yesDiscount' class="t-radio__control t-text t-text_xs" style=""><input type="radio" name="discountOption" value="акция" class="t-radio js-tilda-rule" data-tilda-req="1"><div class="t-radio__indicator"></div>-${holiday[1]} в честь праздника ${holiday[0]}</label>` : '';
+                    const holiday = isHoliday();  // '' or ['8 марта', '15%']
+                    const discount_option = holiday ? `<label id='yesDiscount' class="t-radio__control t-text t-text_xs" style=""><input type="radio" name="discountOption" value=${holiday[1]} class="t-radio js-tilda-rule" data-tilda-req="1"><div class="t-radio__indicator"></div>-${holiday[1]} в честь праздника ${holiday[0]}</label>` : '';
                     const summary_oprion = (cashback_option  && discount_option) ? '<label id="yesCashbackDiscount" class="t-radio__control t-text t-text_xs" style=""><input type="radio" name="discountOption" value="кешбэк + акция" class="t-radio js-tilda-rule" data-tilda-req="1"><div class="  t-radio__indicator"></div>кешбэк + праздничная скидка</label>' : '';
                     t = `<div class="t-input-title t-descr t-descr_md" data-redactor-toolbar="no" field="li_title__1645901383097" style="">Применить скидку</div>
                         <div class="t-input-block">
