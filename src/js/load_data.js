@@ -56,6 +56,8 @@ google.visualization.Query.setResponse = function(data)
                 if (key == "cashback" && document.getElementsByClassName('t-input-group_rd').length > 0) {
                     const cashback_option = (value != '' && !isNaN(value)) ? ` (доступно ${value.toFixed(2)} р.)` : " (недоступно)";
                     t = `<div class="t-input-title t-descr t-descr_md" data-redactor-toolbar="no" field="li_title__1645901383097" style="">Применить скидку</div>
+                        <div class="t-input-subtitle t-descr t-descr_xxs t-opacity_70" data-redactor-toolbar="no" field="li_subtitle__1645901383097" style="">
+                        кешбэк округляется до целых процентов от суммы товаров в корзине (максимум 70% +15% в праздник), если кешбэк &lt; 1%, то  сотых процента. Накоплено: ${value.toFixed(2)} р.</div>
                         <div class="t-input-block">
                             <div class="t-radio__wrapper" id="exclusiveOptions">
                                 <label id='noCashback' class="t-radio__control t-text t-text_xs" style=""><input type="radio" name="discountOption" value="нет" checked="checked" class="t-radio js-tilda-rule" data-tilda-req="1"><div class="t-radio__indicator"></div>нет</label>
